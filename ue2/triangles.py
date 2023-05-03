@@ -96,6 +96,12 @@ def compute_triangle_area(n: np.ndarray) -> float:
 
 
 def calculate_angle(v1, v2):
+    # formel für winkel:
+    # (a * b) / |a| * |b|
+
+    # von radiant in grad umrechnen:
+    # 180°/PI * Winkel in Grad
+
     return 180 - (np.arccos(np.dot(v1, v2) /
                             (np.linalg.norm(v1) * np.linalg.norm(v2)))) * 180/np.pi
 

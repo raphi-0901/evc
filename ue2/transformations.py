@@ -34,6 +34,11 @@ def mscale(sx: float, sy: float) -> np.ndarray:
     # NOTE: The following lines can be removed. They prevent the framework
     #       from crashing.
 
+    # Matrix scaling:
+    # x   0    0
+    # 0   y    0
+    # 0   0    1
+
     m = np.zeros((3, 3))
     m[0][0] = sx
     m[1][1] = sy
@@ -82,6 +87,11 @@ def mtranslate(tx: float, ty: float) -> np.ndarray:
 
     # NOTE: The following lines can be removed. They prevent the framework
     #       from crashing.
+
+    # Matrix translation:
+    # 1   0    x
+    # 0   1    y
+    # 0   0    1
 
     m = np.zeros((3, 3))
     np.fill_diagonal(m, 1)

@@ -57,6 +57,7 @@ def image_mark_green(img: np.ndarray) -> np.ndarray:
     #       from crashing.
 
     mask = np.zeros((img.shape[0], img.shape[1]))
+    # mask ist dann nur noch 2-dimensional
     mask[:, :] = img[:, :, 1]
     mask = mask >= 0.7
 
@@ -143,11 +144,18 @@ def filter_image(img: np.ndarray) -> np.ndarray:
     padded_img = np.zeros(
         (height + 2 * padding_size, width + 2 * padding_size, channels))
 
+    # Die Parameter von Pad geben jeweils an,
+    # um wie viel das Array vergößert werden soll in 1.,2. und 3. dimension
+    # mode = constant sagt, dass es mit einem konstanten Wert (hier 0) gefüllt werden soll.
     padded_img = np.pad(img, ((padding_size, padding_size),
                               (padding_size, padding_size), (0, 0)), mode='constant')
 
     # Ausgabebild initialisieren
     filtered_img = np.zeros_like(img)
+
+    # könnte man auch schreiben als: (convolve ist von scipy.ndimage)
+    # for channel in range(img.shape[2]):
+    #     filtered_img[:, :, channel] = convolve(padded_img[:, :, channel], gaussian_kernel)
 
     # Filter über das Bild anwenden
     for i in range(padding_size, height + padding_size):
@@ -181,6 +189,10 @@ def horizontal_edges(img: np.ndarray) -> np.ndarray:
                              [0, 0, 0],
                              [-1, -2, -1]])
 
+    # scipy.ndimage.correlate  berechnet die diskrete Kreuzkorrelation
+    # zwischen einem Input-Array und einem Filter-Kernel.
+    # Der Filter-Kernel wird über das Input-Array verschoben. Dann wird an jeder Stelle
+    # das Skalarprodukt zwischen den Werten im Input-Array und dem Filter-Kernel berechnet.
     filtered_img = scipy.ndimage.correlate(img, G_horizontal, mode='constant')
 
     # END STUDENT CODE
