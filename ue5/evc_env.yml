@@ -1,4 +1,4 @@
-name: evc_env
+name: evc_env_ue5
 channels:
   - conda-forge
   - defaults
@@ -12,13 +12,13 @@ dependencies:
   - python=3.8.16
   - pip=22.3.1
   - pip:
-    - ipywidgets==8.0.4
-    - jupyterlab-widgets==3.0.5
-    - matplotlib==3.6.3
-    - numpy==1.24.1
-    - openpyxl==3.1.0
-    - pillow==9.4.0
-    - pyqt6==6.4.2
-    - pyqt6-qt6==6.4.2
-    - pyqt6-sip==13.4.1
-    - scipy==1.10.0
+      - ipywidgets==8.0.4
+      - jupyterlab-widgets==3.0.5
+      - matplotlib==3.6.3
+      - numpy==1.24.1
+      - openpyxl==3.1.0
+      - pillow==9.4.0
+      - pyqt6==6.4.2
+      - pyqt6-qt6==6.4.2
+      - pyqt6-sip==13.4.1
+      - scipy==1.10.0
