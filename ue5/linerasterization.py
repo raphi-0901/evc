@@ -39,29 +39,43 @@ def drawLine(framebuffer: Framebuffer, v1: MeshVertex, v2: MeshVertex):
     # STUDENT CODE
     # TO DO: Implement the DDA algorithms to draw a line from v1 to v2 to the given Framebuffer
 
-    # DDA algorithm
+    # calculate dx , dy
     dx = x2 - x1
     dy = y2 - y1
-    steps = max(abs(dx), abs(dy))
-    if steps == 0:
-        return
 
-    x_increment = dx / steps
-    y_increment = dy / steps
+    # Put pixel for each step
+    if (abs(dx) >= abs(dy)):
+        step = abs(dx)
+    else:
+        step = abs(dy)
 
+    dx = dx / step
+    dy = dy / step
     x = x1
     y = y1
 
-    for i in range(int(steps[0])):
-        t = (i + 1) / steps  # Interpolation coefficient
+    for i in range(int(step)):
+        t = (i + 1) / step
 
         # Interpolate color and depth values between v1 and v2
-        interpolated_color = MeshVertex.mix(v1.get_color(), v2.get_color(), t)
+        interpolated_color = MeshVertex.mix(
+            v1.get_color(), v2.get_color(), t)
         interpolated_depth = MeshVertex.mix(depth1, depth2, t)
 
         framebuffer.set_pixel(x, y, interpolated_depth, interpolated_color)
+        x += dx
+        y += dy
 
-        x += x_increment
-        y += y_increment
+    # for i in range(int(steps[0])):
+    #     t = (i + 1) / steps  # Interpolation coefficient
+
+    #     # Interpolate color and depth values between v1 and v2
+    #     interpolated_color = MeshVertex.mix(v1.get_color(), v2.get_color(), t)
+    #     interpolated_depth = MeshVertex.mix(depth1, depth2, t)
+
+    #     framebuffer.set_pixel(x, y, interpolated_depth, interpolated_color)
+
+    #     x += x_increment
+    #     y += y_increment
 
     # END STUDENT CODE
