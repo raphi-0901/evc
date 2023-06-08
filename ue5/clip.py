@@ -27,7 +27,6 @@ def clip(mesh: Mesh, planes: List[ClippingPlane]) -> Mesh:
             vertex_count, positions, colors = clip_plane(
                 vertex_count, positions, colors, plane)
 
-        print(vertex_count)
         if vertex_count != 0:
             clipped_mesh.add_face(vertex_count, positions, colors)
 
@@ -65,9 +64,8 @@ def clip_plane(vertex_count: int, positions: np.ndarray, colors: np.ndarray, pla
     #       	matrix. Note: also between the last and first entry!
     # NOTE:     The following lines can be removed. They prevent the framework
     #           from crashing.
-
-    clipped_vertices = []
-    clipped_colors = []
+    pos_clipped = []
+    col_clipped = []
     for i in range(vertex_count):
         current = positions[i]
         currentColor = colors[i]
@@ -77,27 +75,31 @@ def clip_plane(vertex_count: int, positions: np.ndarray, colors: np.ndarray, pla
 
         current_inside = plane.inside(current)
         previous_inside = plane.inside(previous)
-        intersectionPoint = plane.intersect(current, previous)
 
         if current_inside:
             if not previous_inside:
-                clipped_vertices.append(intersectionPoint)
-                clipped_colors.append(currentColor)
+                t = plane.intersect(previous, current)
+                t = t-10**(-6)
+                pos_clipped.append(MeshVertex.mix(previous, current, t))
+                col_clipped.append(MeshVertex.mix(
+                    currentColor, previousColor, t))
 
-            clipped_vertices.append(current)
-            clipped_colors.append(currentColor)
-
+            pos_clipped.append(current)
+            col_clipped.append(currentColor)
         elif previous_inside:
-            clipped_vertices.append(intersectionPoint)
-            clipped_colors.append(currentColor)
+            t = plane.intersect(previous, current)
+            t = t+10**(-6)
+            pos_clipped.append(MeshVertex.mix(previous, current, t))
+            col_clipped.append(MeshVertex.mix(
+                currentColor, previousColor, t))
 
-    if len(clipped_vertices) == 0:
-        # The face is completely outside the clipping plane
-        return 0, [], []
+    vertex_count_clipped = len(pos_clipped)
+    pos_clipped = np.array(pos_clipped)
+    col_clipped = np.array(col_clipped)
 
-    vertex_count_clipped = len(clipped_vertices)
-    pos_clipped = np.array(clipped_vertices)
-    col_clipped = colors[:vertex_count_clipped]
+    # pos_clipped = positions
+    # col_clipped = colors
+    # vertex_count_clipped = vertex_count
 
     # END STUDENT CODE
 

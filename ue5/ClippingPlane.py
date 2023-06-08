@@ -25,9 +25,10 @@ class ClippingPlane:
         # NOTE:   The following lines can be removed. They prevent the framework
         #         from crashing.
 
-        # Calculate the signed distance of the point from the plane
-        signed_distance = np.dot(pos, self.plane)
-        res = signed_distance <= 0
+        # innerhalb wenn Skalarprodukt < 0
+        # außerhalb wenn Skalarprodukt > 0
+        # darauf wenn Skalarprodukt = 0
+        res = np.dot(pos, self.plane) <= 0
 
         # END STUDENT CODE
 
@@ -40,18 +41,13 @@ class ClippingPlane:
         return t  ... normalized intersection value t in [0, 1]"""
 
         # STUDENT CODE
-        p1 = pos1[:3]
-        p2 = pos2[:3]
-
-        direction = p2 - p1
-        dot_product_direction = np.dot(self.plane[:3], direction)
-        dot_product_difference = np.dot(self.plane[:3], p1)
-        t = dot_product_difference / dot_product_direction
-
-        intersection = pos1 + t * (pos2 - pos1)
+        la = np.dot(pos1, self.plane)
+        lb = np.dot(pos2, self.plane)
+        t = la / (la - lb)
+        t = max(0.0, min(t, 1.0))
 
         # END STUDENT CODE
-        return intersection
+        return t
 
     @staticmethod
     def get_clipping_planes() -> List:
@@ -61,6 +57,10 @@ class ClippingPlane:
         # TODO 2: Define the correct clip planes.
         # NOTE:   The following lines can be removed. They prevent the framework
         #         from crashing.
+
+        # Eine Ebene p⃗ wird in Hessescher Normalform4 dargestellt und kann damit in einem 4-Komponenten
+        # Vektor gespeichert werden, wobei die ersten drei Komponenten dem Normalvektor (Richtung) der Ebe-
+        # ne und die letzte der negativen Distanz zum Ursprung entspricht
 
         left_plane = ClippingPlane(np.array([1, 0, 0, -1]))
         right_plane = ClippingPlane(np.array([-1, 0, 0, -1]))

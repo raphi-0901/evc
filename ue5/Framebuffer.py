@@ -37,7 +37,9 @@ class Framebuffer:
         color = np.delete(color, delete, axis=0)
 
         self.zbuffer[new_coords[:, 1], new_coords[:, 0]] = depth
-        self.image[new_coords[:, 1], new_coords[:, 0]] = color
+
+        if new_coords.size > 0 and color.size > 0:
+            self.image[new_coords[:, 1], new_coords[:, 0]] = color
 
 
     def get_pixel(self, x : int, y : int):
