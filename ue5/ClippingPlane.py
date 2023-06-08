@@ -40,17 +40,18 @@ class ClippingPlane:
         return t  ... normalized intersection value t in [0, 1]"""
 
         # STUDENT CODE
-        # Calculate the signed distances of pos1 and pos2 from the plane
-        dist1 = np.dot(pos1, self.plane)
-        dist2 = np.dot(pos2, self.plane)
+        p1 = pos1[:3]
+        p2 = pos2[:3]
 
-        # Calculate the normalized intersection value t
-        t = dist1 / (dist1 - dist2)
-        t = np.clip(t, 0, 1)  # Ensure t is within the range [0, 1]
+        direction = p2 - p1
+        dot_product_direction = np.dot(self.plane[:3], direction)
+        dot_product_difference = np.dot(self.plane[:3], p1)
+        t = dot_product_difference / dot_product_direction
+
+        intersection = pos1 + t * (pos2 - pos1)
 
         # END STUDENT CODE
-
-        return t
+        return intersection
 
     @staticmethod
     def get_clipping_planes() -> List:
@@ -61,12 +62,12 @@ class ClippingPlane:
         # NOTE:   The following lines can be removed. They prevent the framework
         #         from crashing.
 
-        left_plane = ClippingPlane(np.array([1, 0, 0, 1]))
-        right_plane = ClippingPlane(np.array([-1, 0, 0, 1]))
-        bottom_plane = ClippingPlane(np.array([0, 1, 0, 1]))
-        top_plane = ClippingPlane(np.array([0, -1, 0, 1]))
-        near_plane = ClippingPlane(np.array([0, 0, 1, 1]))
-        far_plane = ClippingPlane(np.array([0, 0, -1, 1]))
+        left_plane = ClippingPlane(np.array([1, 0, 0, -1]))
+        right_plane = ClippingPlane(np.array([-1, 0, 0, -1]))
+        bottom_plane = ClippingPlane(np.array([0, 1, 0, -1]))
+        top_plane = ClippingPlane(np.array([0, -1, 0, -1]))
+        near_plane = ClippingPlane(np.array([0, 0, 1, -1]))
+        far_plane = ClippingPlane(np.array([0, 0, -1, -1]))
 
         res = [
             left_plane, right_plane, bottom_plane, top_plane, near_plane, far_plane

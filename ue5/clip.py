@@ -11,7 +11,7 @@ from MeshVertex import MeshVertex
 from ClippingPlane import ClippingPlane
 
 
-def clip(mesh : Mesh, planes : List[ClippingPlane]) -> Mesh:
+def clip(mesh: Mesh, planes: List[ClippingPlane]) -> Mesh:
     """ clip the mesh with the given planes."""
     clipped_mesh = copy(mesh)
     clipped_mesh.clear()
@@ -24,14 +24,17 @@ def clip(mesh : Mesh, planes : List[ClippingPlane]) -> Mesh:
         vertex_count = 3
 
         for plane in planes:
-            vertex_count, positions, colors = clip_plane(vertex_count, positions, colors, plane)
+            vertex_count, positions, colors = clip_plane(
+                vertex_count, positions, colors, plane)
 
+        print(vertex_count)
         if vertex_count != 0:
             clipped_mesh.add_face(vertex_count, positions, colors)
 
     return clipped_mesh
 
-def clip_plane(vertex_count : int, positions : np.ndarray, colors : np.ndarray, plane : ClippingPlane) -> List[np.ndarray]:
+
+def clip_plane(vertex_count: int, positions: np.ndarray, colors: np.ndarray, plane: ClippingPlane) -> List[np.ndarray]:
     """ clips all vertices defined in positions against the clipping
              plane clipping_plane. Clipping is done by using the Sutherland
              Hodgman algorithm.
@@ -52,27 +55,50 @@ def clip_plane(vertex_count : int, positions : np.ndarray, colors : np.ndarray, 
                                     one row corresponds to one vertex position
             col_clipped           ... n x 3 matrix with colors of n clipped vertices
                                     one row corresponds to one vertex color"""
- 
-    # clear output
-    pos_clipped = np.zeros((vertex_count + 1,  4))
-    col_clipped = np.zeros((vertex_count + 1,  3))
-    vertex_count_clipped = 0
 
-    ### STUDENT CODE
+    # STUDENT CODE
     # TODO 2:   Implement this function.
     # HINT 1: 	Read the article about Sutherland Hodgman algorithm on Wikipedia.
     #           https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm
     #           Take a look at the tutorial.ipynb file for further explanations!
     # HINT 2: 	There is an edge between every consecutive vertex in the positions
     #       	matrix. Note: also between the last and first entry!
-	# NOTE:     The following lines can be removed. They prevent the framework
-	#           from crashing.
+    # NOTE:     The following lines can be removed. They prevent the framework
+    #           from crashing.
 
-    pos_clipped = positions
-    col_clipped = colors
-    vertex_count_clipped = vertex_count
+    clipped_vertices = []
+    clipped_colors = []
+    for i in range(vertex_count):
+        current = positions[i]
+        currentColor = colors[i]
 
-    ### END STUDENT CODE
+        previous = positions[(i - 1) % vertex_count]
+        previousColor = colors[(i - 1) % vertex_count]
 
+        current_inside = plane.inside(current)
+        previous_inside = plane.inside(previous)
+        intersectionPoint = plane.intersect(current, previous)
+
+        if current_inside:
+            if not previous_inside:
+                clipped_vertices.append(intersectionPoint)
+                clipped_colors.append(currentColor)
+
+            clipped_vertices.append(current)
+            clipped_colors.append(currentColor)
+
+        elif previous_inside:
+            clipped_vertices.append(intersectionPoint)
+            clipped_colors.append(currentColor)
+
+    if len(clipped_vertices) == 0:
+        # The face is completely outside the clipping plane
+        return 0, [], []
+
+    vertex_count_clipped = len(clipped_vertices)
+    pos_clipped = np.array(clipped_vertices)
+    col_clipped = colors[:vertex_count_clipped]
+
+    # END STUDENT CODE
 
     return vertex_count_clipped, pos_clipped, col_clipped
