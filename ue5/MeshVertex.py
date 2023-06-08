@@ -30,25 +30,24 @@ class MeshVertex:
         return x, y, z
 
     @staticmethod
-    def mix(a : np.ndarray, b : np.ndarray, t : np.ndarray) -> np.ndarray:
+    def mix(a: np.ndarray, b: np.ndarray, t: np.ndarray) -> np.ndarray:
         """Interpolates the line defined by a,b at position t and returns the result."""
-        ### STUDENT CODE
+        # STUDENT CODE
 
-        res = a
+        res = (1 - t) * a + t * b
 
-        ### END STUDENT CODE
+        # END STUDENT CODE
 
         return res
 
     @staticmethod
-    def barycentric_mix(a : np.ndarray, b : np.ndarray, c : np.ndarray, alpha : int, beta : int, gamma : int) -> np.ndarray:
+    def barycentric_mix(a: np.ndarray, b: np.ndarray, c: np.ndarray, alpha: int, beta: int, gamma: int) -> np.ndarray:
         """Interpolates the triangle defined by a,b,c at barycentric coordinates alpha, beta, gamma and returns the result."""
 
-        ### STUDENT CODE
+        # STUDENT CODE
 
-        res = a
+        res = alpha * a + beta * b + gamma * c
 
-        ### END STUDENT CODE
+        # END STUDENT CODE
 
         return res
-
