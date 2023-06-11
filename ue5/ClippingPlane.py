@@ -44,12 +44,18 @@ class ClippingPlane:
         la = np.dot(pos1, self.plane)
         lb = np.dot(pos2, self.plane)
         t = la / (la - lb)
+
+        if self.inside(pos1):
+            t = t - 10**-6
+        elif self.inside(pos2):
+            t = t + 10**-6
+
         t = max(0.0, min(t, 1.0))
 
         # END STUDENT CODE
         return t
 
-    @staticmethod
+    @ staticmethod
     def get_clipping_planes() -> List:
         """creates and returns a list of the six Clipping planes defined in the task description."""
 
