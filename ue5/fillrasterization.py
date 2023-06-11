@@ -85,10 +85,10 @@ def draw_triangle(framebuffer: Framebuffer, v1: MeshVertex, v2: MeshVertex, v3: 
         # BONUS:  Solve this task without using loops.
 
         # Determine bounding box
-        min_x = min(x1, x2, x3)
-        max_x = max(x1, x2, x3)
-        min_y = min(y1, y2, y3)
-        max_y = max(y1, y2, y3)
+        minX = min(x1, x2, x3)
+        maxX = max(x1, x2, x3)
+        minY = min(y1, y2, y3)
+        maxY = max(y1, y2, y3)
 
         # Berechnung der Kantenvektoren
         e1x = x3-x2
@@ -117,8 +117,8 @@ def draw_triangle(framebuffer: Framebuffer, v1: MeshVertex, v2: MeshVertex, v3: 
         f2 = line_eq(A2, B2, C2, x2, y2)
         f3 = line_eq(A3, B3, C3, x3, y3)
 
-        for y in range(int(min_y), int(max_y) + 1):
-            for x in range(int(min_x), int(max_x) + 1):
+        for y in range(int(minY), int(maxY) + 1):
+            for x in range(int(minX), int(maxX) + 1):
                 O1 = line_eq(A1, B1, C1, x, y)
                 O2 = line_eq(A2, B2, C2, x, y)
                 O3 = line_eq(A3, B3, C3, x, y)

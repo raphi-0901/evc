@@ -42,12 +42,10 @@ def drawLine(framebuffer: Framebuffer, v1: MeshVertex, v2: MeshVertex):
     # calculate dx , dy
     dx = x2 - x1
     dy = y2 - y1
+    step = abs(dy)
 
-    # Put pixel for each step
     if (abs(dx) >= abs(dy)):
         step = abs(dx)
-    else:
-        step = abs(dy)
 
     dx = dx / step
     dy = dy / step
@@ -56,12 +54,13 @@ def drawLine(framebuffer: Framebuffer, v1: MeshVertex, v2: MeshVertex):
 
     for i in range(int(step)):
         t = (i + 1) / step
-        # Interpolate color and depth values between v1 and v2
-        interpolated_color = MeshVertex.mix(
-            v1.get_color(), v2.get_color(), t)
-        interpolated_depth = MeshVertex.mix(depth1, depth2, t)
 
-        framebuffer.set_pixel(x, y, interpolated_depth, interpolated_color)
+        # Interpolate color and depth values between v1 and v2
+        interpolatedColor = MeshVertex.mix(
+            v1.get_color(), v2.get_color(), t)
+        interpolatedDepth = MeshVertex.mix(depth1, depth2, t)
+
+        framebuffer.set_pixel(x, y, interpolatedDepth, interpolatedColor)
         x += dx
         y += dy
 

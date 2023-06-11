@@ -68,15 +68,15 @@ class ClippingPlane:
         # Vektor gespeichert werden, wobei die ersten drei Komponenten dem Normalvektor (Richtung) der Ebe-
         # ne und die letzte der negativen Distanz zum Ursprung entspricht
 
-        left_plane = ClippingPlane(np.array([1, 0, 0, -1]))
-        right_plane = ClippingPlane(np.array([-1, 0, 0, -1]))
-        bottom_plane = ClippingPlane(np.array([0, 1, 0, -1]))
-        top_plane = ClippingPlane(np.array([0, -1, 0, -1]))
-        near_plane = ClippingPlane(np.array([0, 0, 1, -1]))
-        far_plane = ClippingPlane(np.array([0, 0, -1, -1]))
+        leftPlane = ClippingPlane(np.array([1, 0, 0, -1]))
+        rightPlane = ClippingPlane(np.array([-1, 0, 0, -1]))
+        bottomPlane = ClippingPlane(np.array([0, 1, 0, -1]))
+        topPlane = ClippingPlane(np.array([0, -1, 0, -1]))
+        nearPlane = ClippingPlane(np.array([0, 0, 1, -1]))
+        farPlane = ClippingPlane(np.array([0, 0, -1, -1]))
 
         res = [
-            left_plane, right_plane, bottom_plane, top_plane, near_plane, far_plane
+            leftPlane, rightPlane, bottomPlane, topPlane, nearPlane, farPlane
         ]
 
         # END STUDENT CODE

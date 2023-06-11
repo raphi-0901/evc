@@ -73,11 +73,11 @@ def clip_plane(vertex_count: int, positions: np.ndarray, colors: np.ndarray, pla
         previous = positions[(i - 1) % vertex_count]
         previousColor = colors[(i - 1) % vertex_count]
 
-        current_inside = plane.inside(current)
-        previous_inside = plane.inside(previous)
+        currentInside = plane.inside(current)
+        previousInside = plane.inside(previous)
 
-        if current_inside:
-            if not previous_inside:
+        if currentInside:
+            if not previousInside:
                 t = plane.intersect(previous, current)
                 pos_clipped.append(MeshVertex.mix(previous, current, t))
                 col_clipped.append(MeshVertex.mix(
@@ -85,7 +85,7 @@ def clip_plane(vertex_count: int, positions: np.ndarray, colors: np.ndarray, pla
 
             pos_clipped.append(current)
             col_clipped.append(currentColor)
-        elif previous_inside:
+        elif previousInside:
             t = plane.intersect(previous, current)
             pos_clipped.append(MeshVertex.mix(previous, current, t))
             col_clipped.append(MeshVertex.mix(
